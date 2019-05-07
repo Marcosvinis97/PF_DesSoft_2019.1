@@ -9,7 +9,7 @@ Marcos Vinicius da Silva
 O projeto final de Design de Software se constitui na formação de um jogo, intitulado por “Phisics On Python”, sendo um game no estilo Puzzle. No jogo, o jogador precisa avançar por fases, as quais vão aumentando a dificuldade. À medida em que o jogo avança, a dificuldade vai aumentando, e as fases vão se tornando mais complexas
 
 #pagina inicial#
-![imagem da primeira tela de inicio](Imagens/inicio.jpeg)
+![imagem da primeira tela de inicio](Imagens/inicio.png)
 
 
 ETAPAS DO PROJETO: 
@@ -22,9 +22,9 @@ ETAPAS DO PROJETO:
 
 
 #menu de fases#
-![imagem do menu de fases](Imagens/fases.jpeg)
+![imagem do menu de fases](Imagens/fases.png)
 
 
 #fase 0#
-![imagem da primeira tela de jogo](imagens/1.jpeg)
+![imagem da primeira tela de jogo](Imagens/1.png)
 
