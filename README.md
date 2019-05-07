@@ -1,12 +1,10 @@
 ﻿# PF_DesSoft_2019.1
-
-<<<<<<< HEAD
-#Alunos
-##Cicero Tiago Carneiro Valentim
-## Marcos Vinícius da Silva
-## Luiz Felipe Lazzaron
-
 """
+Alunos: 
+	Cicero Tiago Carneiro Valentim
+	Luiz Felipe Lazzaron
+	Marcos Vinicius da Silva
+
 O projeto final de Design de Software se constitui na formação de um jogo, intitulado por “Phisics On Python”, sendo um game no estilo Puzzle. No jogo, o jogador precisa avançar por fases, as quais vão aumentando a dificuldade. À medida em que o jogo avança, a dificuldade vai aumentando, e as fases vão se tornando mais complexas
 
 ETAPAS DO PROJETO:
@@ -52,20 +50,17 @@ ETAPAS DO PROJETO:
 	Documentação feedback dos usuários;
 	Documento de Pós-Produção;
 	Documentação Visual para portfólio de projetos -InsperX;
-
-
-<<<<<<< HEAD
-=======
-#pagina inicial#
-![imagem da primeira tela de inicio](imagens/inicio.jpeg)
-
 """
+
+#pagina inicial#
+![imagem da primeira tela de inicio](Imagens/inicio.png)
+
 #menu de fases
 ![imagem do menu de fases](imagens/fases.jpeg)
->>>>>>> 61bf781c405968553470b45b7baccf22edb126d0
 
-// Texto sobre o jogo // 
+#menu de fases#
+![imagem do menu de fases](Imagens/fases.png)
 
-fase 0:
-![imagem da primeira tela de jogo](imagens/1.jpeg)
->>>>>>> fd283c88d01d9bb393419fc9bd811f9df609ede1
+#fase 0#
+![imagem da primeira tela de jogo](Imagens/1.png)
+
