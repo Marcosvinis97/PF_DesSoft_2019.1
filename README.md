@@ -1,5 +1,6 @@
 # PF_DesSoft_2019.1
 
+<<<<<<< HEAD
 #Alunos
 ##Cicero Tiago Carneiro Valentim
 ## Marcos Vinícius da Silva
@@ -16,3 +17,14 @@ CRONOGRAMA
 
 
 """
+=======
+Alunos: 
+Cicero Tiago Carneiro Valentim
+Luiz Felipe Lazzaron
+Marcos Vinicius da Silva
+
+// Texto sobre o jogo // 
+
+fase 0:
+![imagem da primeira tela de jogo](imagens/1.jpeg)
+>>>>>>> fd283c88d01d9bb393419fc9bd811f9df609ede1
