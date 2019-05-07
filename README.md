@@ -9,6 +9,12 @@
 """
 O projeto final de Design de Software se constitui na formação de um jogo, intitulado por “Phisics On Python”, sendo um game no estilo Puzzle. No jogo, o jogador precisa avançar por fases, as quais vão aumentando a dificuldade. À medida em que o jogo avança, a dificuldade vai aumentando, e as fases vão se tornando mais complexas
 
+<<<<<<< HEAD
+=======
+#pagina inicial#
+![imagem da primeira tela de inicio](imagens/inicio.jpeg)
+
+>>>>>>> 61bf781c405968553470b45b7baccf22edb126d0
 ETAPAS DO PROJETO: 
 	1. Pré-Projeto;
 	2. Pré-Produção;
@@ -17,6 +23,7 @@ ETAPAS DO PROJETO:
 	5. Publicação;
 	6. Pós-Produção;
 
+<<<<<<< HEAD
 1. Pré-Projeto:
 CRONOGRAMA MACRO:
 > 10/05 - Jogo simples rodando, com apenas uma fase teste;
@@ -30,6 +37,10 @@ Alunos:
 Cicero Tiago Carneiro Valentim
 Luiz Felipe Lazzaron
 Marcos Vinicius da Silva
+=======
+#menu de fases
+![imagem do menu de fases](imagens/fases.jpeg)
+>>>>>>> 61bf781c405968553470b45b7baccf22edb126d0
 
 // Texto sobre o jogo // 
 
