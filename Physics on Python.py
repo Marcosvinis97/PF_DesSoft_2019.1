@@ -19,7 +19,7 @@ WIDTH = 720 # Largura da tela
 HEIGHT = 480 # Altura da tela
 FPS = 60 # Frames por segundo
 
-g = 10
+g = 5
 # Define algumas variáveis com as cores básicas
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -49,9 +49,9 @@ class Player(pygame.sprite.Sprite):
         # Detalhes sobre o posicionamento.
         self.rect = self.image.get_rect()
         
-        # Centraliza embaixo da tela.
+        # Centralizan no centro da tela.
         self.rect.centerx = WIDTH / 2
-        self.rect.bottom = HEIGHT - 10
+        self.rect.bottom = HEIGHT /2
         
         # Velocidade da nave
         self.speedx = 0
@@ -73,12 +73,12 @@ class Player(pygame.sprite.Sprite):
             self.rect.left = 0
         if self.rect.top < 0:
             self.rect.top = 0
-        if self.rect.bottom > HEIGHT:
-            self.rect.bottom = HEIGHT
+        if self.rect.bottom > HEIGHT-113:
+            self.rect.bottom = HEIGHT-113
         else:
             self.jumping = False
             self.jumpingCount += 1
-            self.speedy += 3
+            self.speedy += g
                     
             
             
@@ -96,6 +96,7 @@ def load_assets(img_dir):
     return assets
 
 def game_screen(screen):
+    time.sleep(2)
     # Carrega todos os assets uma vez só e guarda em um dicionário
     assets = load_assets(img_dir)
 
