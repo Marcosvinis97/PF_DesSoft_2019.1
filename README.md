@@ -17,11 +17,11 @@ ETAPAS DO PROJETO:
 
 Pré-Projeto:
 	CRONOGRAMA MACRO:
-	>10/05 - Jogo simples rodando, com apenas uma fase teste;
-	>17/05 - Jogo com iterações de fases novas e cenários;
-	>24/05 - Jogo com todas as fases e os cenários definidos;
-	>27/05 - Jogo pronto para entrega - Restante da semana com foco no visual;
-	>31/06 - Entrega;
+	10/05 - Jogo simples rodando, com apenas uma fase teste;
+	17/05 - Jogo com iterações de fases novas e cenários;
+	24/05 - Jogo com todas as fases e os cenários definidos;
+	27/05 - Jogo pronto para entrega - Restante da semana com foco no visual;
+	31/06 - Entrega;
 
 Pré-Produção:
 	Elaboração do Game Design Document - 1 page GDD;
