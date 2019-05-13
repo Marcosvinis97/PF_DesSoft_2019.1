@@ -1,197 +1,165 @@
 # -*- coding: utf-8 -*-
-"""
-Physics on Python
+"""Created on Thu May  9 19:41:42 2019
+Testando pymunk no pyglet
 """
 
-# -*- coding: utf-8 -*-
-
-# Importando as bibliotecas necessárias.
-import pygame
+import pyglet  # pip install pyglet
+from pyglet.window import key, mouse
+import pymunk # pip install pymunk
+from pymunk.pyglet_util import DrawOptions
+from math import sqrt
 import random
-import time
-from os import path
 
-# Estabelece a pasta que contem as figuras e sons.
-img_dir = path.join(path.dirname(__file__), 'imagens')
+width = 720
+height = 480
+FPS = 60
+window = pyglet.window.Window(width, height, "Pymunk Testing", resizable = False)
+options = DrawOptions()
+options.collision_point_color = (0,0,0,255)
+space = pymunk.Space()
+space.gravity = 0, -300
+space.idle_speed_threshold = 1000
+space.sleep_time_threshold = 50 
 
-# Dados gerais do jogo.
-WIDTH = 720 # Largura da tela
-HEIGHT = 480 # Altura da tela
-FPS = 60 # Frames por segundo
+class Ball():
+    def __init__(self,radius,mass,position):
+        self.radius = radius
+        self.mass = mass
+        self.moment = pymunk.moment_for_circle(self.mass,0,self.radius,(0,0))
+        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC )
+        self.body.position = position
+        self.shape = pymunk.Circle(self.body,self.radius,(0,0))
+        self.shape.elasticity = 1
+        self.body.velocity = 0,0
+        self.shape.friction = 1.0
+        self.existence = self.body,self.shape
 
-g = 5
-# Define algumas variáveis com as cores básicas
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-YELLOW = (255, 255, 0)
-TRANSPARENTE = (200,0,200)
-# Classe Jogador que representa a nave
-class Player(pygame.sprite.Sprite):
-    
-    # Construtor da classe.
-    def __init__(self, player_img):
-        
-        # Construtor da classe pai (Sprite).
-        pygame.sprite.Sprite.__init__(self)
-        
-        # Carregando a imagem de fundo.
-        self.image = player_img
-        
-        # Diminuindo o tamanho da imagem.
-        self.image = pygame.transform.scale(player_img, (50, 50))
-        
-        # Deixando transparente.
-        self.image.set_colorkey(TRANSPARENTE)
-        
-        # Detalhes sobre o posicionamento.
-        self.rect = self.image.get_rect()
-        
-        # Centralizan no centro da tela.
-        self.rect.centerx = WIDTH / 2
-        self.rect.bottom = HEIGHT /2
-        
-        # Velocidade da nave
-        self.speedx = 0
-        self.speedy = 0
-        # Esfera saltando:
-        self.jumping = False
-        self.jumpingCount = 0
-        # Melhora a colisão estabelecendo um raio de um circulo
-        self.radius = 25
-    
-    # Metodo que atualiza a posição da navinha
-    def update(self):
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
-        # Mantem dentro da tela
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > HEIGHT-113:
-            self.rect.bottom = HEIGHT-113
+class Segment():
+    def __init__(self,start_point,end_point,thickness): # start e end_point = (x,y)
+        self.start_point = start_point
+        self.end_point = end_point
+        self.thickness = thickness
+        self.shape = pymunk.Segment(space.static_body,self.start_point,self.end_point,self.thickness)
+        self.shape.elasticity = 0.9
+        self.shape.friction = 1
+class Dot():
+    def __init__(self, point):
+        self.point = point
+        self.thickness = 3
+        self.shape = pymunk.Segment(space.static_body,self.point,self.point,self.thickness)
+        self.shape.elasticity = 1
+        self.shape.friction = 1
+class Box():
+    def __init__(self, mass, size, position): # size = (largura, altura); position = (x_centro, y_centro)
+        self.mass = mass
+        self.size = size
+        self.moment = pymunk.moment_for_box(self.mass,self.size)
+        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
+        self.shape = pymunk.Poly.create_box(self.body, size)
+        self.body.position = position
+        self.shape.elasticity = 0.6
+        self.shape.friction = 1
+        self.existence = self.shape,self.body
+
+class Poly():
+    def __init__(self,mass,vertices,position):
+        self.mass = mass
+        self.vertices = vertices
+        self.shape = pymunk.Poly(None,self.vertices)
+        self.moment = pymunk.moment_for_poly(self.mass, self.shape.get_vertices())
+        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
+        self.shape.body = self.body
+        self.body.position = position
+        self.shape.elasticity = 1
+        self.shape.friction = 1
+        self.existence = self.body, self.shape
+
+
+# CRIAÇÃO DO PLAYER (CONTROLÁVEL)
+player = Ball(25,100,(width/2,height/2))
+player.shape.elasticity = 1
+player.shape.friction = 0
+space.add(player.existence)
+
+# ELEMENTOS DINÂMICOS:
+player2 = Ball(30,20,(35,height-30))
+#player2.body.velocity = (random.randint(-100,100),random.randint(-100,100))
+space.add(player2.existence)
+
+# ELEMENTOS CINÉTICOS (SOLIDOS QUE NÃO SOFREM EFEITOS DE FORÇAS)
+triangle = Poly(100,((0,0),(100,0),(0,100)),(2,2))
+triangle.shape.friction = 0
+triangle.body.body_type = pymunk.Body.KINEMATIC
+triangle2 = Poly(100,((0,0),(100,0),(100,100)),(102,0))
+triangle2.shape.friction = 0
+triangle2.body.body_type = pymunk.Body.KINEMATIC
+space.add(triangle.existence,triangle2.existence)
+
+# ELEMENTOS ESTÁTICOS:
+segment1 = Segment((0,0),(width,0),2)
+segment2 = Segment((width,0),(width,height),2)
+segment3 = Segment((width,height),(0,height),2)
+segment4 = Segment((0,height),(0,80),2)
+space.add(segment1.shape, segment2.shape, segment3.shape, segment4.shape)
+
+
+
+running = True
+@window.event
+def on_draw():
+    window.clear()
+    space.debug_draw(options)
+
+def update(dt):
+    if running:
+        space.step(dt)
+
+@window.event
+def on_key_press(symbol,modifiers):
+    # AUMENTA A VELOCIDADE NOS RESPECTIVOS SENTIDOS
+    if symbol == key.RIGHT:
+        player.body.velocity += 300,0
+    if symbol == key.LEFT:
+        player.body.velocity -= 300,0
+    if symbol == key.UP:
+        player.body.velocity += 0,300
+    if symbol == key.DOWN:
+        player.body.velocity -= 0,300
+    # GRAVIDADE ZERO
+    if symbol == key.SPACE:
+        if space.gravity == (0, -300):
+            space.gravity = 0,0
         else:
-            self.jumping = False
-            self.jumpingCount += 1
-            self.speedy += g
-                    
-            
-            
-# Carrega todos os assets uma vez só.
-def load_assets(img_dir):
-    assets = {}
-    assets["player_img"] = pygame.image.load(path.join(img_dir, "Esfera.png")).convert()
-    img = pygame.image.load(path.join(img_dir, "background.png")).convert()
-    img.set_colorkey(TRANSPARENTE)
-    assets["background"] = img
-    img = pygame.image.load(path.join(img_dir, "floor.png")).convert()
-    img.set_colorkey(TRANSPARENTE)
-    assets["floor"] = img
-    
-    return assets
-
-def game_screen(screen):
-    time.sleep(2)
-    # Carrega todos os assets uma vez só e guarda em um dicionário
-    assets = load_assets(img_dir)
-
-    # Variável para o ajuste de velocidade
-    clock = pygame.time.Clock()
-
-    # Carrega o fundo do jogo
-    background = assets["background"]
-    background_rect = background.get_rect()
-    
-    # Carrega o chão do jogo
-    floor = assets["floor"]
-    floor_rect = floor.get_rect()
-    floor_rect.bottom = HEIGHT
-
-
-    # Cria uma esfera. O construtor será chamado automaticamente.
-    player = Player(assets["player_img"])
-
-    # Cria um grupo de todos os sprites e adiciona a nave.
-    all_sprites = pygame.sprite.Group()
-    all_sprites.add(player)
-
-    PLAYING = 0
-    DONE = 2
-    state = PLAYING
-    while state != DONE:
-        
-        # Ajusta a velocidade do jogo.
-        clock.tick(FPS)
-        
-        if state == PLAYING:
-            # Processa os eventos (mouse, teclado, botão, etc).
-            for event in pygame.event.get():
+            space.gravity = 0,-300
+    # PARA O TEMPO (USO NÃO RECOMENDADO CASO HAJA MUITOS ELEMENTOS NO ESPAÇO)
+    if symbol == key.T:
+        for bodies in space.bodies:
+            if bodies.body_type == pymunk.Body.DYNAMIC:
+                if not bodies.is_sleeping:
+                    bodies.sleep()
+                else:
+                    bodies.activate()
+    # FECHA O JOGO
+    if symbol == key.ESCAPE:
+        running = False
                 
-                # Verifica se foi fechado.
-                if event.type == pygame.QUIT:
-                    state = DONE
-                
-                # Verifica se apertou alguma tecla.
-                if event.type == pygame.KEYDOWN:
-                    # Dependendo da tecla, altera a velocidade.
-                    if event.key == pygame.K_LEFT:
-                        player.speedx = -8
-                    if event.key == pygame.K_RIGHT:
-                        player.speedx = 8
-                    if not player.jumping:
-                        if event.key == pygame.K_UP:
-                            player.speedy = -30
-                        if event.key == pygame.K_DOWN:
-                            player.speedy = 8
-                    if event.key == pygame.K_SPACE:
-                        player.jumping = True
-                        player.update()
-                        
-                # Verifica se soltou alguma tecla.
-                if event.type == pygame.KEYUP:
-                    # Dependendo da tecla, altera a velocidade.
-                    if event.key == pygame.K_LEFT:
-                        player.speedx = 0
-                    if event.key == pygame.K_RIGHT:
-                        player.speedx = 0
-                    if event.key == pygame.K_UP:
-                        player.jumpingCount = 0
-                        player.speedy = 0
-                    if event.key == pygame.K_DOWN:
-                        player.speedy = 0
-                    if event.key == pygame.K_SPACE:
-                        player.jumping = False
-                        player.update()
-                    
-        # Depois de processar os eventos.
-        # Atualiza a acao de cada sprite.
-        all_sprites.update()
+@window.event
+def on_mouse_press(x,y,button,modifiers):
+    # LADO DIREITO ADICIONA 1 QUADRADO CINÉTICOS NA POSIÇÃO DO MOUSE
+    if button & mouse.RIGHT:
+        box = Box(50,(25,25),(x,y))
+        box.body.body_type = pymunk.Body.KINEMATIC
+        space.add(box.existence)
+    # LADO ESQUERDO ADICIONA 1 QUADRADO DINÂMICO NA POSIÇÃO DO MOUSE
+    if button & mouse.LEFT:
+        box = Box(50,(25,25),(x,y))
+        space.add(box.existence)
 
-        # A cada loop, redesenha o fundo e os sprites
-        screen.fill(BLACK)
-        screen.blit(background, background_rect)
-        screen.blit(floor,floor_rect)
-        all_sprites.draw(screen)
-        
-        # Depois de desenhar tudo, inverte o display.
-        pygame.display.flip()
+if __name__ == "__main__":
+    pyglet.clock.schedule_interval(update,1/60)
+    pyglet.app.run()
 
-# Inicialização do Pygame.
-pygame.init()
 
-# Tamanho da tela.
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
-# Nome do jogo
-pygame.display.set_caption("Bola")
 
-# Comando para evitar travamentos.
-try:
-    game_screen(screen)
-finally:
-    pygame.quit()
+
