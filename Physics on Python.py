@@ -6,10 +6,8 @@ pygame.init()
 
 pygame.display.set_caption("Tela inicial")
 
-
+#Parâmetros da página do jogo
 JANELA = pygame.display.set_mode((720,480))
-
-
 LARGURA = 720
 ALTURA = 480
 x,y = LARGURA/2,ALTURA/2
