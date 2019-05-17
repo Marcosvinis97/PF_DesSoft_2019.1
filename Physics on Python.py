@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 """Created on Thu May  9 19:41:42 2019
 Testando pymunk no pyglet
 """
@@ -14,7 +14,6 @@ width = 913
 height = 595
 FPS = 70
 window = Window(width, height, "Pymunk Testing", resizable = False)
-
 image = pyglet.resource.image('Plano_Game1.png')
 
 options = DrawOptions()
@@ -89,6 +88,7 @@ player2 = Ball(30,20,(35,height-30))
 #player2.body.velocity = (random.randint(-100,100),random.randint(-100,100))
 space.add(player2.existence)
 
+
 # ELEMENTOS CINÉTICOS (SOLIDOS QUE NÃO SOFREM EFEITOS DE FORÇAS)
 triangle = Poly(100,((0,0),(100,0),(0,100)),(2,2))
 triangle.shape.friction = 0
@@ -105,8 +105,6 @@ segment3 = Segment((width,height),(0,height),2)
 segment4 = Segment((0,height),(0,80),2)
 space.add(segment1.shape, segment2.shape, segment3.shape, segment4.shape)
 
-
-
 running = True
 @window.event
 def on_draw():
@@ -114,7 +112,7 @@ def on_draw():
     image.blit(0,0)
     space.debug_draw(options)
 
-def update(dt):
+def update(dt): #dt é "data time"
     if running:
         space.step(dt)
 
@@ -163,7 +161,5 @@ if __name__ == "__main__":
     pyglet.clock.schedule_interval(update,1/FPS)
     pyglet.app.run()
 
-
-
-
-
+    pyglet.clock.schedule_interval(update,1/60)
+    pyglet.app.run()
