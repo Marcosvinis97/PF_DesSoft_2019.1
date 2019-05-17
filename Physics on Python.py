@@ -4,18 +4,21 @@ Testando pymunk no pyglet
 """
 
 import pyglet  # pip install pyglet
-from pyglet.window import key, mouse
+from pyglet.window import key, mouse, Window
 import pymunk # pip install pymunk
 from pymunk.pyglet_util import DrawOptions
 from math import sqrt
 import random
 
-width = 720
-height = 480
-FPS = 60
-window = pyglet.window.Window(width, height, "Pymunk Testing", resizable = False)
+width = 913
+height = 595
+FPS = 70
+window = Window(width, height, "Pymunk Testing", resizable = False)
+
+image = pyglet.resource.image('Plano_Game1.png')
+
 options = DrawOptions()
-options.collision_point_color = (0,0,0,255)
+options.collision_point_color = (255,0,0,255)
 space = pymunk.Space()
 space.gravity = 0, -300
 space.idle_speed_threshold = 1000
@@ -108,6 +111,7 @@ running = True
 @window.event
 def on_draw():
     window.clear()
+    image.blit(0,0)
     space.debug_draw(options)
 
 def update(dt):
@@ -156,7 +160,7 @@ def on_mouse_press(x,y,button,modifiers):
         space.add(box.existence)
 
 if __name__ == "__main__":
-    pyglet.clock.schedule_interval(update,1/60)
+    pyglet.clock.schedule_interval(update,1/FPS)
     pyglet.app.run()
 
 
