@@ -15,6 +15,7 @@ height = 595
 FPS = 70
 window = Window(width, height, "Pymunk Testing", resizable = False)
 image = pyglet.resource.image('Plano_Game1.png')
+image_solo = pyglet.image.load('Solo.png')
 
 options = DrawOptions()
 options.collision_point_color = (255,0,0,255)
@@ -111,6 +112,7 @@ def on_draw():
     window.clear()
     image.blit(0,0)
     space.debug_draw(options)
+    image_solo.blit(0,0)
 
 def update(dt): #dt é "data time"
     if running:
