@@ -28,25 +28,25 @@ Pré-Produção:
 	Elaboração do Documento de Arte e Level Design;
 	Elaboração do Documento de Som;
 
-Plano de Produção
+Plano de Produção:
 	Listar e ordenar tudo que for identificado e considerado necessário para o jogo - Adicionar no Trello;
 	Planejamento dos ciclos de vida da produção - Semanal;
 	Revisão do cronograma - Semanal;
 
-Produção
+Produção:
 	Reunião semanal de Planejamento;
 	Relatório de bugs encontrados - Adicionar no GitHub;
 	Reunião semanal com resultados das metas;
 	Realização constante de testes - Toda sexta na aula de Design de Software;
 	Ciclo de Polimento - Última semana, com o jogo pronto;
 
-Publicação
+Publicação:
 	Ciclo Final - Polimento;
 	Marketing - InsperX;
 	Teste Final - Amigos/Colegas;
 	Reunião final com a equipe;
 
-Pós-Produção
+Pós-Produção:
 	Documentação feedback dos usuários;
 	Documento de Pós-Produção;
 	Documentação Visual para portfólio de projetos - InsperX;
