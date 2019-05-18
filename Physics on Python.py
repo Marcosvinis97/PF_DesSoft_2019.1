@@ -84,19 +84,19 @@ player.shape.friction = 0
 space.add(player.existence)
 
 # ELEMENTOS DINÂMICOS:
-player2 = Ball(30,20,(35,height-30))
+#player2 = Ball(30,20,(35,height-30))
 #player2.body.velocity = (random.randint(-100,100),random.randint(-100,100))
-space.add(player2.existence)
+#space.add(player2.existence)
 
 
 # ELEMENTOS CINÉTICOS (SOLIDOS QUE NÃO SOFREM EFEITOS DE FORÇAS)
-triangle = Poly(100,((0,0),(100,0),(0,100)),(2,2))
-triangle.shape.friction = 0
-triangle.body.body_type = pymunk.Body.KINEMATIC
-triangle2 = Poly(100,((0,0),(100,0),(100,100)),(102,0))
-triangle2.shape.friction = 0
-triangle2.body.body_type = pymunk.Body.KINEMATIC
-space.add(triangle.existence,triangle2.existence)
+#triangle = Poly(100,((0,0),(100,0),(0,100)),(2,2))
+#triangle.shape.friction = 0
+#triangle.body.body_type = pymunk.Body.KINEMATIC
+rectangle1 = Poly(100,((0,0),(width,0),(width, 13),(0,13)),(0,0))
+rectangle1.shape.friction = 0
+rectangle1.body.body_type = pymunk.Body.KINEMATIC
+space.add(rectangle1.shape)
 
 # ELEMENTOS ESTÁTICOS:
 segment1 = Segment((0,0),(width,0),2)
