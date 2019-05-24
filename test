@@ -1,0 +1,14 @@
+import pyglet
+
+width = 913
+height = 595
+window = pyglet.window.Window(width, height, "Pymunk Testing", resizable = False)
+
+image = pyglet.resource.image('Plano_Game1.png')
+
+@window.event
+def on_draw():
+	window.clear()
+	image.blit(0,0)
+
+pyglet.app.run()

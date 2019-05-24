@@ -20,6 +20,7 @@ class Game:
         self.FPS = 60
         self.window = pyglet.window.Window(self.width,self.height,"Physics On Python", resizable = False)
 
+<<<<<<< HEAD
         #Adding a icon
         icon = pyglet.image.load('icon.png')
         self.window.set_icon(icon)
