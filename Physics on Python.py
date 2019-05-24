@@ -19,8 +19,6 @@ class Game:
         self.height = 720
         self.FPS = 60
         self.window = pyglet.window.Window(self.width,self.height,"Physics On Python", resizable = False)
-
-<<<<<<< HEAD
         #Adding a icon
         icon = pyglet.image.load('icon.png')
         self.window.set_icon(icon)
@@ -36,9 +34,10 @@ class Game:
     def change_screen(self):
         self.screen = AnotherScreen(self)
         self.register_event_handlers()
-        self.player = Ball(Ball,25,50,)
+        # self.player = Ball(25,50,(self.width /2, self.height /2))
 
     def run(self):
+        pyglet.clock.schedule_interval(AnotherScreen.update,1/60)
         pyglet.app.run()
 
 # -----------------------------------------------------SCREENS---------------------------------------------------
@@ -109,7 +108,8 @@ class IntroScreen(Screen):
 class AnotherScreen(Screen):
     def __init__(self, game):
         super(AnotherScreen, self).__init__(game)
-        
+        #Start
+        self.running = True
         #Pymunk specifications
         self.options = DrawOptions()
         self.options.collision_point_color = (0,0,0,255)
@@ -141,16 +141,49 @@ class AnotherScreen(Screen):
         
 
     def on_mouse_press(self, x, y, button, modifier):
-        if button == mouse.LEFT:                                    
-            print("The left mouse was pressed")
-        elif button == mouse.RIGHT:
-            print("Right Mouse was pressed")
+        # LADO DIREITO ADICIONA 1 QUADRADO CINÉTICOS NA POSIÇÃO DO MOUSE
+        if button & mouse.RIGHT:
+            box = Box(50,(25,25),(x,y))
+            box.body.body_type = pymunk.Body.KINEMATIC
+            self.space.add(box.existence)
+        # LADO ESQUERDO ADICIONA 1 QUADRADO DINÂMICO NA POSIÇÃO DO MOUSE
+        if button & mouse.LEFT:
+            box = Box(50,(25,25),(x,y))
+            self.space.add(box.existence)
+
 
     def on_key_press(self, symbol, modifiers):
-        if symbol == key.A:
-            print("Olá")
+        # AUMENTA A VELOCIDADE NOS RESPECTIVOS SENTIDOS
+        if symbol == key.RIGHT:
+            self.player.body.velocity += 300,0
+        if symbol == key.LEFT:
+            self.player.body.velocity -= 300,0
+        if symbol == key.UP:
+            self.player.body.velocity += 0,300
+        if symbol == key.DOWN:
+            self.player.body.velocity -= 0,300
+        # GRAVIDADE ZERO
+        if symbol == key.SPACE:
+            if self.space.gravity == (0, -300):
+                self.space.gravity = 0,0
+            else:
+                self.space.gravity = 0,-300
+        # PARA O TEMPO (USO NÃO RECOMENDADO CASO HAJA MUITOS ELEMENTOS NO ESPAÇO)
+        if symbol == key.T:
+            for bodies in self.space.bodies:
+                if bodies.body_type == pymunk.Body.DYNAMIC:
+                    if not bodies.is_sleeping:
+                        bodies.sleep()
+                    else:
+                        bodies.activate()
+        # FECHA O JOGO
         if symbol == key.Q:
-            print("Eba!")
+            self.running = False
+
+    def update(self,dt): #dt é "data time"
+        if self.running:
+            space.step(dt)
+            print("funcionou")
 
     def on_draw(self):
         self.window.clear()
