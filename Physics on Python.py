@@ -16,7 +16,7 @@ class Game:
     def __init__(self):
         #Creating a window
         self.width = 1280
-        self.height = 720
+        self.height = 480
         self.FPS = 60
         self.window = pyglet.window.Window(self.width,self.height,"Physics On Python", resizable = False)
         #Adding a icon
@@ -37,7 +37,6 @@ class Game:
         # self.player = Ball(25,50,(self.width /2, self.height /2))
 
     def run(self):
-        pyglet.clock.schedule_interval(AnotherScreen.update,1/60)
         pyglet.app.run()
 
 # -----------------------------------------------------SCREENS---------------------------------------------------
@@ -54,6 +53,7 @@ class Screen:
 
     def on_draw(self):
         pass
+
 
 
 class IntroScreen(Screen):
@@ -108,8 +108,8 @@ class IntroScreen(Screen):
 class AnotherScreen(Screen):
     def __init__(self, game):
         super(AnotherScreen, self).__init__(game)
-        #Start
-        self.running = True
+
+        pyglet.clock.schedule_interval(self.update,1/60)
         #Pymunk specifications
         self.options = DrawOptions()
         self.options.collision_point_color = (0,0,0,255)
@@ -121,9 +121,10 @@ class AnotherScreen(Screen):
         self.player = Ball(25,100,(game.width/2,game.height/2))
         self.space.add(self.player.existence)
             # ELEMENTOS DINÂMICOS:
-        # self.player2 = Ball(30,20,(35,height-30))
-            #player2.body.velocity = (random.randint(-100,100),random.randint(-100,100))
-        # self.space.add(player2.existence)
+        self.player2 = Ball(30,20,(35,game.height-30))
+        self.player2.body.velocity = (random.randint(-100,100),random.randint(-100,100))
+        self.space.add(self.player2.existence)
+
             # ELEMENTOS CINÉTICOS (SOLIDOS QUE NÃO SOFREM EFEITOS DE FORÇAS)
         self.triangle = Poly(100,((0,0),(100,0),(0,100)),(2,2))
         self.triangle.shape.friction = 0
@@ -176,18 +177,14 @@ class AnotherScreen(Screen):
                         bodies.sleep()
                     else:
                         bodies.activate()
-        # FECHA O JOGO
-        if symbol == key.Q:
-            self.running = False
 
     def update(self,dt): #dt é "data time"
-        if self.running:
-            space.step(dt)
-            print("funcionou")
+        self.space.step(dt)
 
     def on_draw(self):
         self.window.clear()
         self.space.debug_draw(self.options)
+
 
 
 #-------------------------------------------------- OBJECTS ------------------------------------------------------------
@@ -249,6 +246,8 @@ class Poly():
         self.existence = self.body, self.shape
 
 #-----------------------------------------------------start------------------------------------------------------------
+
+
 if __name__ == '__main__': 
     game = Game()
     game.run()
