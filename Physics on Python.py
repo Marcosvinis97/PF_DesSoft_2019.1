@@ -16,12 +16,16 @@ class Game:
     def __init__(self):
         #Creating a window
         self.width = 1280
-        self.height = 480
+        self.height = 560
         self.FPS = 60
         self.window = pyglet.window.Window(self.width,self.height,"Physics On Python", resizable = False)
         #Adding a icon
         icon = pyglet.image.load('icon.png')
         self.window.set_icon(icon)
+        #Music
+        #music = pyglet.media.load('winter.wav', streaming = False)
+        #music.play()
+
 
         self.screen = IntroScreen(self)
         self.register_event_handlers()
@@ -34,7 +38,6 @@ class Game:
     def change_screen(self):
         self.screen = AnotherScreen(self)
         self.register_event_handlers()
-        # self.player = Ball(25,50,(self.width /2, self.height /2))
 
     def run(self):
         pyglet.app.run()
@@ -114,25 +117,21 @@ class AnotherScreen(Screen):
         self.options = DrawOptions()
         self.options.collision_point_color = (0,0,0,255)
         self.space = pymunk.Space()
-        self.space.gravity = 0, -300
-        self.space.idle_speed_threshold = 1000
-        self.space.sleep_time_threshold = 50 
+        self.space.gravity = 0, -1000
+        self.space.idle_speed_threshold = 10
+        self.space.sleep_time_threshold = 50
         # Pymunk Space
-        self.player = Ball(25,100,(game.width/2,game.height/2))
-        self.space.add(self.player.existence)
-            # ELEMENTOS DINÂMICOS:
-        self.player2 = Ball(30,20,(35,game.height-30))
-        self.player2.body.velocity = (random.randint(-100,100),random.randint(-100,100))
-        self.space.add(self.player2.existence)
 
-            # ELEMENTOS CINÉTICOS (SOLIDOS QUE NÃO SOFREM EFEITOS DE FORÇAS)
-        self.triangle = Poly(100,((0,0),(100,0),(0,100)),(2,2))
-        self.triangle.shape.friction = 0
-        self.triangle.body.body_type = pymunk.Body.KINEMATIC
-        self.triangle2 = Poly(100,((0,0),(100,0),(100,100)),(102,0))
-        self.triangle2.shape.friction = 0
-        self.triangle2.body.body_type = pymunk.Body.KINEMATIC
-        self.space.add(self.triangle.existence,self.triangle2.existence)
+        self.player = Poly(25,( (0,0),(15,0),(20,-20),(30,-20),(35,0),(50,0),(50,80),(25,100),(0,80) ),(game.width/2,game.height/2))   
+        self.player.body.center_of_gravity = (15,18)
+        self.space.add(self.player.existence)
+
+            # ELEMENTOS DINÂMICOS:
+        #self.player2 = Ball(30,20,(35,game.height-30))
+        #self.player2.body.velocity = (random.randint(-100,100),random.randint(-100,100))
+        #self.space.add(self.player2.existence)
+        #self.c = pymunk.PivotJoint(self.player.body, self.player2.body, (0,0))
+#        self.space.add(self.c)
             # ELEMENTOS ESTÁTICOS:
         self.segment1 = Segment((0,0),(game.width,0),2)
         self.segment2 = Segment((game.width,0),(game.width,game.height),2)
@@ -156,13 +155,13 @@ class AnotherScreen(Screen):
     def on_key_press(self, symbol, modifiers):
         # AUMENTA A VELOCIDADE NOS RESPECTIVOS SENTIDOS
         if symbol == key.RIGHT:
-            self.player.body.velocity += 300,0
+            self.player.body.apply_impulse_at_local_point((0,-2000),(50,0))
         if symbol == key.LEFT:
-            self.player.body.velocity -= 300,0
+            self.player.body.apply_force_at_world_point((0,+2000),(50,0))
         if symbol == key.UP:
-            self.player.body.velocity += 0,300
+            self.player.body.apply_impulse_at_local_point((0,+20000),(15,15))
         if symbol == key.DOWN:
-            self.player.body.velocity -= 0,300
+            self.player.body.apply_impulse_at_local_point((0,-20000),(15,15))
         # GRAVIDADE ZERO
         if symbol == key.SPACE:
             if self.space.gravity == (0, -300):
@@ -244,7 +243,6 @@ class Poly():
         self.shape.elasticity = 1
         self.shape.friction = 1
         self.existence = self.body, self.shape
-
 #-----------------------------------------------------start------------------------------------------------------------
 
 
