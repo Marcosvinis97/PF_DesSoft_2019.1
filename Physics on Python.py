@@ -124,8 +124,7 @@ class AnotherScreen(Screen):
         self.space.sleep_time_threshold = 50
         # Pymunk Space
 
-        self.player = Poly(25,( (0,0),(15,0),(20,-20),(30,-20),(35,0),(50,0),(50,80),(25,100),(0,80) ),(game.width/2,game.height/2))   
-        self.player.body.center_of_gravity = (7.5,10)
+        self.player = Ball(20, 25,(game.width/2,game.height/2))
         self.player.body.elasticity = 0.5
         self.player.body.friction = 1
         self.space.add(self.player.existence)
