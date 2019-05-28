@@ -8,8 +8,9 @@ from pyglet.gl import *
 #Pymunk
 import pymunk # pip install pymunk
 from pymunk.pyglet_util import DrawOptions
+from pymunk.vec2d import Vec2d
 #Math
-from math import sqrt
+from math import sqrt, degrees
 import random
 # --------------------------------------------CLASSE PRINCIPAL---------------------------------------------------
 class Game:
@@ -22,6 +23,7 @@ class Game:
         #Adding a icon
         icon = pyglet.image.load('icon.png')
         self.window.set_icon(icon)
+        
         #Music
         #music = pyglet.media.load('winter.wav', streaming = False)
         #music.play()
@@ -123,9 +125,15 @@ class AnotherScreen(Screen):
         # Pymunk Space
 
         self.player = Poly(25,( (0,0),(15,0),(20,-20),(30,-20),(35,0),(50,0),(50,80),(25,100),(0,80) ),(game.width/2,game.height/2))   
-        self.player.body.center_of_gravity = (15,18)
+        self.player.body.center_of_gravity = (7.5,10)
+        self.player.body.elasticity = 0.5
+        self.player.body.friction = 1
         self.space.add(self.player.existence)
 
+        self.bussola = pyglet.image.load("bussola.png")
+        self.bussola.anchor_x, self.bussola.anchor_y = self.bussola.width//2, self.bussola.height//2
+        self.bussola_sprite = pyglet.sprite.Sprite(self.bussola, x = game.width-50, y = game.height-50)
+        
             # ELEMENTOS DINÂMICOS:
         #self.player2 = Ball(30,20,(35,game.height-30))
         #self.player2.body.velocity = (random.randint(-100,100),random.randint(-100,100))
@@ -139,6 +147,30 @@ class AnotherScreen(Screen):
         self.segment4 = Segment((0,game.height),(0,80),2)
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
         
+        
+        self.background = pyglet.resource.image("Plano_Game1.png")
+        self.solo = pyglet.resource.image("Solo.png")
+        
+
+        self.texts = [self.player.body.velocity, 
+                      self.player.body.position,
+                      self.player.body.angle,
+                      self.player.body.angular_velocity]
+        self.status = [0]*len(self.texts)
+        for i in range(len(self.texts)):
+            self.status[i] = pyglet.text.Label("{}".format(self.texts[i]),
+                                    font_name = "Arial",
+                                    font_size = 10,
+                                    color = (100, 255, 0, 255),
+                                    x = game.width -200,
+                                    y = game.height -50 - (21*i),
+                                    anchor_x = "left",
+                                    anchor_y = "center",
+                                    align = "left")
+        
+
+
+
 
     def on_mouse_press(self, x, y, button, modifier):
         # LADO DIREITO ADICIONA 1 QUADRADO CINÉTICOS NA POSIÇÃO DO MOUSE
@@ -155,9 +187,9 @@ class AnotherScreen(Screen):
     def on_key_press(self, symbol, modifiers):
         # AUMENTA A VELOCIDADE NOS RESPECTIVOS SENTIDOS
         if symbol == key.RIGHT:
-            self.player.body.apply_impulse_at_local_point((0,-2000),(50,0))
+            self.player.body.apply_impulse_at_local_point((0,+2000),(0,0))
         if symbol == key.LEFT:
-            self.player.body.apply_force_at_world_point((0,+2000),(50,0))
+            self.player.body.apply_impulse_at_local_point((0,+2000),(30,0))
         if symbol == key.UP:
             self.player.body.apply_impulse_at_local_point((0,+20000),(15,15))
         if symbol == key.DOWN:
@@ -179,12 +211,30 @@ class AnotherScreen(Screen):
 
     def update(self,dt): #dt é "data time"
         self.space.step(dt)
-
+        self.bussola_sprite.rotation = -degrees(self.player.body.angle)
+        self.texts = ["player velocity: {:.2f}".format(Vec2d(self.player.body.velocity)[0]), 
+                      "player position: {0:.2f},{1:.2f}".format(self.player.body.position[0],self.player.body.position[1]),
+                      "player angle: {:.2f}".format(self.player.body.angle),
+                      "player angular velocity: {:.2f}".format(self.player.body.angular_velocity)]
+        for i in range(len(self.status)):
+            self.status[i] = pyglet.text.Label("{}".format(self.texts[i]),
+                                    font_name = "Arial",
+                                    font_size = 10,
+                                    color = (100, 255, 0, 255),
+                                    x = game.width -200,
+                                    y = game.height -50 - (21*i),
+                                    anchor_x = "left",
+                                    anchor_y = "center",
+                                    align = "center")
+        
     def on_draw(self):
         self.window.clear()
+        self.background.blit(0,0)
+        self.bussola_sprite.draw()
+        self.solo.blit(0,0)
+        for i in range(len(self.texts)):
+            self.status[i].draw()
         self.space.debug_draw(self.options)
-
-
 
 #-------------------------------------------------- OBJECTS ------------------------------------------------------------
 
@@ -215,7 +265,8 @@ class Dot():
     def __init__(self, point):
         self.point = point
         self.thickness = 3
-        self.shape = pymunk.Segment(space.static_body,self.point,self.point,self.thickness)
+        self.space = pymunk.Space()
+        self.shape = pymunk.Segment(self.space.static_body,self.point,self.point,self.thickness)
         self.shape.elasticity = 1
         self.shape.friction = 1
 
