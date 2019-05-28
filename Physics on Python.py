@@ -20,8 +20,6 @@ class Game:
         self.height = 560
         self.FPS = 60
         self.window = pyglet.window.Window(self.width,self.height,"Physics On Python", resizable = False)
-        self.image = pyglet.resource.image('Plano_Game1.png')
-        self.image_solo = pyglet.image.load('Solo.png')
         #Adding a icon
         icon = pyglet.image.load('icon.png')
         self.window.set_icon(icon)
@@ -142,6 +140,7 @@ class AnotherScreen(Screen):
         #self.space.add(self.player2.existence)
         #self.c = pymunk.PivotJoint(self.player.body, self.player2.body, (0,0))
 #        self.space.add(self.c)
+
             # ELEMENTOS ESTÁTICOS:
         self.segment1 = Segment((0,0),(game.width,0),2)
         self.segment2 = Segment((game.width,0),(game.width,game.height),2)
