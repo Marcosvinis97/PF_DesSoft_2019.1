@@ -70,6 +70,7 @@ class IntroScreen(Screen):
 
         #Gif
         animation = pyglet.image.load_animation("jump.gif")
+            
         self.animSprite = pyglet.sprite.Sprite(animation)
 
         #Labels (texts on screen)
@@ -187,13 +188,13 @@ class AnotherScreen(Screen):
     def on_key_press(self, symbol, modifiers):
         # AUMENTA A VELOCIDADE NOS RESPECTIVOS SENTIDOS
         if symbol == key.RIGHT:
-            self.player.body.apply_impulse_at_local_point((0,+2000),(0,0))
+            self.player.body.angular_velocity += 1
         if symbol == key.LEFT:
-            self.player.body.apply_impulse_at_local_point((0,+2000),(30,0))
+            self.player.body.angular_velocity -= 1
         if symbol == key.UP:
-            self.player.body.apply_impulse_at_local_point((0,+20000),(15,15))
+            self.player.body.velocity += (0,300)
         if symbol == key.DOWN:
-            self.player.body.apply_impulse_at_local_point((0,-20000),(15,15))
+            self.player.body.velocity -= 0,300
         # GRAVIDADE ZERO
         if symbol == key.SPACE:
             if self.space.gravity == (0, -300):
