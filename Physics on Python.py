@@ -288,11 +288,11 @@ class AnotherScreen(Screen):
         self.player.combustivel = 3000
         self.space.add(self.player.existence)
      
-            # ELEMENTOS ESTÁTICOS:
-        self.segment1 = Segment((0,13),(game.width,13),2)
-        self.segment2 = Segment((game.width,0),(game.width,game.height),2)
-        self.segment3 = Segment((game.width,game.height),(0,game.height),2)
-        self.segment4 = Segment((0,game.height),(0,80),2)
+        # ELEMENTOS ESTÁTICOS: 
+        self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
+        self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
+        self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
+        self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
         
         
@@ -455,11 +455,11 @@ class CarScreen(Screen):
         self.space.add(self.c, self.d, self.roda_dianteira.existence, self.roda_traseira.existence, self.e, self.f, self.g, self.h)
   
         
-            # ELEMENTOS ESTÁTICOS:
-        self.segment1 = Segment((0,0),(game.width,0),2)
-        self.segment2 = Segment((game.width,0),(game.width,game.height),2)
-        self.segment3 = Segment((game.width,game.height),(0,game.height),2)
-        self.segment4 = Segment((0,game.height),(0,0),2)
+        # ELEMENTOS ESTÁTICOS: 
+        self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
+        self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
+        self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
+        self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
 
     def on_mouse_press(self, x, y, button, modifier):
@@ -494,11 +494,11 @@ class CarScreen(Screen):
         self.space.add(self.c, self.d, self.roda_dianteira.existence, self.roda_traseira.existence, self.e, self.f, self.g, self.h)
   
         
-            # ELEMENTOS ESTÁTICOS:
-        self.segment1 = Segment((0,0),(game.width,0),2)
-        self.segment2 = Segment((game.width,0),(game.width,game.height),2)
-        self.segment3 = Segment((game.width,game.height),(0,game.height),2)
-        self.segment4 = Segment((0,game.height),(0,0),2)
+        # ELEMENTOS ESTÁTICOS: 
+        self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
+        self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
+        self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
+        self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
 
 
