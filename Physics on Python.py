@@ -48,7 +48,7 @@ class Game:
         pyglet.app.run()
         
     
-# -------------------------------------------------- OBJETOS ------------------------------------------------------------
+#-------------------------------------------------- OBJETOS ------------------------------------------------------------
 
 
 collision_types = {
@@ -465,6 +465,7 @@ class CarScreen(Screen):
                         bodies.activate()
         if symbol == key.ESCAPE:
             game.change_screen(symbol)
+
     def update(self,dt): #dt é "data time
         self.space.step(dt)
         
@@ -472,43 +473,7 @@ class CarScreen(Screen):
         self.window.clear()
         self.space.debug_draw(self.options)
 
-#-----------------------------------------------------start------------------------------------------------------------
-
-
-
-    def on_key_press(self, symbol, modifiers):
-        # AUMENTA A VELOCIDADE NOS RESPECTIVOS SENTIDOS
-        if symbol == key.RIGHT:
-            self.car.body.apply_impulse_at_local_point((10000,0),self.car.body.center_of_gravity)
-        if symbol == key.LEFT:
-            self.car.body.apply_impulse_at_local_point((-10000,0),self.car.body.center_of_gravity)
-#        if symbol == key.UP:
-#            self.player.body.velocity += (0,100)
-#        if symbol == key.DOWN:
-#            self.player.body.velocity -= (0,100)
-        # GRAVIDADE ZERO
-        if symbol == key.SPACE:
-            if self.space.gravity == (0, -300):
-                self.space.gravity = 0,0
-            else:
-                self.space.gravity = 0,-300
-        # PARA O TEMPO (USO NÃO RECOMENDADO CASO HAJA MUITOS ELEMENTOS NO ESPAÇO)
-        if symbol == key.T:
-            for bodies in self.space.bodies:
-                if bodies.body_type == pymunk.Body.DYNAMIC:
-                    if not bodies.is_sleeping:
-                        bodies.sleep()
-                    else:
-                        bodies.activate()
-        if symbol == key.ESCAPE:
-            game.change_screen(symbol)
-    def update(self,dt): #dt é "data time
-        self.space.step(dt)
-        
-    def on_draw(self):
-        self.window.clear()
-        self.space.debug_draw(self.options)
-#-----------------------------------------------------start------------------------------------------------------------
+#----------------------------------------------------- START ------------------------------------------------------------
 if __name__ == '__main__': 
     game = Game()
     game.run()
