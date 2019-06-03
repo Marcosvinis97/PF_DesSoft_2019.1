@@ -308,12 +308,12 @@ class AnotherScreen(Screen):
         self.solo = pyglet.resource.image("Solo.png")
         
 
-        self.texts = [self.player.body.velocity, 
-                      self.player.body.position,
-                      self.player.body.angle,
-                      self.player.body.angular_velocity,
-                      self.player.combustivel,
-                      self.player.vida]
+        self.texts = [self.player.body.position[0], 
+                      self.player.body.position[1],
+                      self.player.body.velocity[0],
+                      self.player.body.velocity[1],
+                      self.player.body.angular_velocity]
+
         self.status = [0]*len(self.texts)
         for i in range(len(self.texts)):
             self.status[i] = pyglet.text.Label("{}".format(self.texts[i]),
@@ -390,12 +390,13 @@ class AnotherScreen(Screen):
         self.player_sprite.position,self.player_sprite.rotation, self.bussola_sprite.rotation = self.player.body.position, -degrees(self.player.body.angle), -degrees(self.player.body.angle)
 
         self.space.step(dt)
-        self.texts = ["player's velocity: {:.2f}".format(Vec2d(self.player.body.velocity)[0]), 
-                      "player's position: {0:.2f},{1:.2f}".format(self.player.body.position[0],self.player.body.position[1]),
-                      "player's angle: {:.2f}".format(self.player.body.angle),
-                      "player's angular velocity: {:.2f}".format(self.player.body.angular_velocity),
-                      "player's combustivel: {:.2f} L".format(self.player.combustivel),
-                      "player's vida: {:.2f}".format(self.player.vida)]
+
+        self.texts = ["Alcance: {:.2f}".format(self.player.body.position[0]),
+                    "Altitude: {:.2f}".format(self.player.body.position[1]),
+                    "Velocidade X: {:.2f}".format(self.player.body.velocity[0]),
+                    "Velocidade Y: {:.2f}".format(self.player.body.velocity[1]),
+                    "Velocidade Angular: {:.2f}".format(self.player.body.angular_velocity)] 
+
         for i in range(len(self.status)):
             self.status[i] = pyglet.text.Label("{}".format(self.texts[i]),
                                     font_name = "Arial",
