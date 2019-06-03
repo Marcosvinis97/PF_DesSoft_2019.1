@@ -1,15 +1,13 @@
-# -*- coding: utf-8 -*-
-
-# ----------------------------------------------BIBLIOTECAS -------------------------------------------------------
+#---------------------------------------------- BIBLIOTECAS -------------------------------------------------------
 # Pyglet
 import pyglet
 from pyglet.window import key, mouse
 from pyglet.gl import *
-#Pymunk
-import pymunk # pip install pymunk
+# Pymunk
+import pymunk 
 from pymunk.pyglet_util import DrawOptions
 from pymunk.vec2d import Vec2d
-#Math
+# Math
 from math import sqrt, degrees
 import random
 
@@ -87,7 +85,7 @@ class Poly():
         self.vida = 1000
 
 
-# --------------------------------------------CLASSE PRINCIPAL---------------------------------------------------
+#-------------------------------------------- CLASSE PRINCIPAL ---------------------------------------------------
 class Game:
     def __init__(self):
         self.width = 1350
@@ -96,9 +94,11 @@ class Game:
         self.window = pyglet.window.Window(self.width,self.height,"Physics On Python", resizable = False)
         icon = pyglet.image.load('icon.png')
         self.window.set_icon(icon)
+
         #Music
         #music = pyglet.media.load('winter.wav', streaming = False)
         #music.play()
+
         self.screen = IntroScreen(self)
         self.register_event_handlers()
 
@@ -122,7 +122,7 @@ class Game:
         pyglet.app.run()
         
     
-#-------------------------------------------------- OBJECTS ------------------------------------------------------------
+# -------------------------------------------------- OBJETOS ------------------------------------------------------------
 
 
 collision_types = {
@@ -138,11 +138,8 @@ class Player():
         self.shape.body = self.body
         self.body.position = position
         self.shape.elasticity = 1
-        self.shape.friction = 1
-        
-        self.shape.collision_type = collision_types["player"]
-      #  joint = pymunk.GrooveJoint(AnotherScreen.space.static_body,self,(100,100),(1180,100),(0,0))
-        
+        self.shape.friction = 1      
+        self.shape.collision_type = collision_types["player"]       
         self.existence = self.body, self.shape
         self.vida = 1000
         
@@ -204,7 +201,6 @@ class Poly():
         self.shape.friction = 1
         self.existence = self.body, self.shape
         self.vida = 1000
-
 
 class Screen:
     def __init__(self, game):
@@ -291,11 +287,7 @@ class AnotherScreen(Screen):
         self.player_sprite = pyglet.sprite.Sprite(self.player_image, x = self.player.body.position[0], y = self.player.body.position[1])
         self.player.combustivel = 3000
         self.space.add(self.player.existence)
-
-        self.bussola = pyglet.image.load("bussola.png")
-        self.bussola.anchor_x, self.bussola.anchor_y = self.bussola.width//2, self.bussola.height//2
-        self.bussola_sprite = pyglet.sprite.Sprite(self.bussola, x = game.width-50, y = game.height-50)
-        
+     
             # ELEMENTOS ESTÁTICOS:
         self.segment1 = Segment((0,13),(game.width,13),2)
         self.segment2 = Segment((game.width,0),(game.width,game.height),2)
@@ -307,7 +299,6 @@ class AnotherScreen(Screen):
         self.background = pyglet.resource.image("Plano_Game1.png")
         self.solo = pyglet.resource.image("Solo.png")
         
-
         self.texts = [self.player.body.position[0], 
                       self.player.body.position[1],
                       self.player.body.velocity[0],
@@ -361,8 +352,7 @@ class AnotherScreen(Screen):
                 self.player.combustivel -= 10
             if symbol == key.ESCAPE:
                 game.change_screen(symbol)
-
-               
+              
             # GRAVIDADE ZERO
             if symbol == key.SPACE:
                 if self.space.gravity == (0, -300):
@@ -384,10 +374,7 @@ class AnotherScreen(Screen):
      
 
     def update(self,dt): #dt é "data time"
-#        for meteoro in self.meteoros:
-#            self.meteoros[meteoro]["meteoro_image"].position,self.meteoros[meteoro]["meteoro_image"].rotation = self.meteoros[meteoro]["meteoro"].body.position, -degrees(self.meteoros[meteoro]["meteoro"].body.angle)
-
-        self.player_sprite.position,self.player_sprite.rotation, self.bussola_sprite.rotation = self.player.body.position, -degrees(self.player.body.angle), -degrees(self.player.body.angle)
+        self.player_sprite.position,self.player_sprite.rotation = self.player.body.position, -degrees(self.player.body.angle)
 
         self.space.step(dt)
 
@@ -411,10 +398,8 @@ class AnotherScreen(Screen):
     def on_draw(self):
         self.space.debug_draw(self.options)
         self.window.clear()
-#        for meteoro in self.meteoros:
-#            self.meteoros[meteoro][sprite].draw()
         self.background.blit(0,0)
-        self.bussola_sprite.draw(), self.player_sprite.draw()
+        self.player_sprite.draw()
         self.solo.blit(0,0)
         
         for i in range(len(self.texts)):
