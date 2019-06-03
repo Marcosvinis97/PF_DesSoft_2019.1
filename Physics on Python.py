@@ -11,80 +11,6 @@ from pymunk.vec2d import Vec2d
 from math import sqrt, degrees
 import random
 
-class Player():
-    def __init__(self,mass,vertices,position):
-        self.mass = mass
-        self.vertices = vertices
-        self.shape = pymunk.Poly(None,self.vertices)
-        self.moment = pymunk.moment_for_poly(self.mass, self.shape.get_vertices())
-        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
-        self.shape.body = self.body
-        self.body.position = position
-        self.shape.elasticity = 1
-        self.shape.friction = 1
-        self.existence = self.body, self.shape
-        self.vida = 1000
-        
-class Ball():
-    def __init__(self,radius,mass,position):
-        self.radius = radius
-        self.mass = mass
-        self.moment = pymunk.moment_for_circle(self.mass,0,self.radius,(0,0))
-        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
-        self.body.position = position
-        self.shape = pymunk.Circle(self.body,self.radius,(0,0))
-        self.shape.elasticity = 1
-        self.body.velocity = 0,0
-        self.shape.friction = 1.0
-        self.combustivel = 3000
-        self.existence = self.body,self.shape
-
-class Segment():
-    def __init__(self,start_point,end_point,thickness): # start e end_point = (x,y)
-        self.start_point = start_point
-        self.end_point = end_point
-        self.thickness = thickness
-        self.space = pymunk.Space()
-        self.shape = pymunk.Segment(self.space.static_body,self.start_point,self.end_point,self.thickness)
-        self.shape.elasticity = 0.0001
-        self.shape.friction = 1
-
-class Dot():
-    def __init__(self, point):
-        self.point = point
-        self.thickness = 3
-        self.space = pymunk.Space()
-        self.shape = pymunk.Segment(self.space.static_body,self.point,self.point,self.thickness)
-        self.shape.elasticity = 1
-        self.shape.friction = 1
-
-class Box():
-    def __init__(self, mass, size, position): # size = (largura, altura); position = (x_centro, y_centro)
-        self.mass = mass
-        self.size = size
-        self.moment = pymunk.moment_for_box(self.mass,self.size)
-        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
-        self.shape = pymunk.Poly.create_box(self.body, size)
-        self.body.position = position
-        self.shape.elasticity = 0.6
-        self.shape.friction = 1
-        self.existence = self.shape,self.body
-
-class Poly():
-    def __init__(self,mass,vertices,position):
-        self.mass = mass
-        self.vertices = vertices
-        self.shape = pymunk.Poly(None,self.vertices)
-        self.moment = pymunk.moment_for_poly(self.mass, self.shape.get_vertices())
-        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
-        self.shape.body = self.body
-        self.body.position = position
-        self.shape.elasticity = 1
-        self.shape.friction = 1
-        self.existence = self.body, self.shape
-        self.vida = 1000
-
-
 #-------------------------------------------- CLASSE PRINCIPAL ---------------------------------------------------
 class Game:
     def __init__(self):
@@ -164,7 +90,7 @@ class Segment():
         self.thickness = thickness
         self.space = pymunk.Space()
         self.shape = pymunk.Segment(self.space.static_body,self.start_point,self.end_point,self.thickness)
-        self.shape.elasticity = 0.0001
+        self.shape.elasticity = 0
         self.shape.friction = 1
 
 class Dot():
@@ -280,19 +206,22 @@ class AnotherScreen(Screen):
 
         self.player = Player(10,( (0,0),(171/5, 0),(171/10,300/5) ),(game.width/2,game.height/2))
         self.player.body.center_of_gravity = ( (0 + 171/5 + 171/10)/3, 300/15)
-        self.player.body.elasticity = 0.0001
+        self.player.body.elasticity = 0
         self.player.body.friction = 1
         self.player_image = pyglet.image.load("nave.png")
-       # self.player_image.anchor_x, self.player_image.anchor_y = self.player_image.width//2, self.player_image.height//2
         self.player_sprite = pyglet.sprite.Sprite(self.player_image, x = self.player.body.position[0], y = self.player.body.position[1])
         self.player.combustivel = 3000
         self.space.add(self.player.existence)
      
         # ELEMENTOS ESTÁTICOS: 
         self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
+        self.segment1.shape.friction = 1
         self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
+        self.segment2.shape.friction = 0
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
+        self.segment3.shape.friction = 0
         self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
+        self.segment4.shape.friction = 0
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
         
         
@@ -457,9 +386,13 @@ class CarScreen(Screen):
         
         # ELEMENTOS ESTÁTICOS: 
         self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
+        self.segment1.shape.friction = 1
         self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
+        self.segment2.shape.friction = 0
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
+        self.segment3.shape.friction = 0
         self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
+        self.segment4.shape.friction = 0
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
 
     def on_mouse_press(self, x, y, button, modifier):
@@ -496,9 +429,13 @@ class CarScreen(Screen):
         
         # ELEMENTOS ESTÁTICOS: 
         self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
+        self.segment1.shape.friction = 1
         self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
+        self.segment2.shape.friction = 0
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
+        self.segment3.shape.friction = 0
         self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
+        self.segment4.shape.friction = 0
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
 
 
