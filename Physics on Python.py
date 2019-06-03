@@ -439,6 +439,7 @@ class CarScreen(Screen):
     def __init__(self, game):
         super(CarScreen, self).__init__(game)
 
+
         pyglet.clock.schedule_interval(self.update,1/60)
         #Pymunk specifications
         self.options = DrawOptions()
@@ -477,7 +478,80 @@ class CarScreen(Screen):
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
 
     def on_mouse_press(self, x, y, button, modifier):
-        pass
+
+        pyglet.clock.schedule_interval(self.update,1/60)
+        #Pymunk specifications
+        self.options = DrawOptions()
+        self.options.collision_point_color = (0,0,0,255)
+        self.space = pymunk.Space()
+        self.space.gravity = 0, 0
+        self.space.idle_speed_threshold = 10
+        self.space.sleep_time_threshold = 50
+        # Pymunk Space
+        self.distance_car_x = 300
+        self.distance_car_y = 300
+        self.car = Poly(50,( (0,0),(80,0),(80,30),(30,60),(0,60) ),(self.distance_car_x, self.distance_car_y))   
+        self.car.body.center_of_gravity = (40,30)
+        self.car.body.elasticity = 0.1
+        self.car.body.friction = 1
+        self.space.add(self.car.existence)
+        
+        self.roda_dianteira = Ball(20,20,(self.distance_car_x + 40, self.distance_car_y-30))
+        self.roda_dianteira.shape.elasticity = 0.1
+        self.roda_traseira = Ball(20,20,(self.distance_car_x- 50, self.distance_car_y-30))
+        self.roda_traseira.shape.elasticity = 0.1
+        self.c = pymunk.PinJoint(self.car.body, self.roda_traseira.body, (0, 0), (0, 0))
+        self.e = pymunk.SlideJoint(self.car.body, self.roda_traseira.body, (0, 60), (0, 0), 81,  100)
+        self.g = pymunk.DampedSpring(self.car.body, self.roda_traseira.body, (0, 60), (0, 0), 100, 1000,70)
+        self.d = pymunk.PinJoint(self.car.body, self.roda_dianteira.body,(80,0), (0,0))
+        self.f = pymunk.SlideJoint(self.car.body, self.roda_dianteira.body, (80,30), (0, 0), 60, 70)
+        self.h = pymunk.DampedSpring(self.car.body, self.roda_dianteira.body, (80,30), (0,0), 100, 1000,65)
+        self.space.add(self.c, self.d, self.roda_dianteira.existence, self.roda_traseira.existence, self.e, self.f, self.g, self.h)
+  
+        
+            # ELEMENTOS ESTÁTICOS:
+        self.segment1 = Segment((0,0),(game.width,0),2)
+        self.segment2 = Segment((game.width,0),(game.width,game.height),2)
+        self.segment3 = Segment((game.width,game.height),(0,game.height),2)
+        self.segment4 = Segment((0,game.height),(0,0),2)
+        self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
+
+
+    def on_key_press(self, symbol, modifiers):
+        # AUMENTA A VELOCIDADE NOS RESPECTIVOS SENTIDOS
+        if symbol == key.RIGHT:
+            self.car.body.apply_impulse_at_local_point((10000,0),self.car.body.center_of_gravity)
+        if symbol == key.LEFT:
+            self.car.body.apply_impulse_at_local_point((-10000,0),self.car.body.center_of_gravity)
+#        if symbol == key.UP:
+#            self.player.body.velocity += (0,100)
+#        if symbol == key.DOWN:
+#            self.player.body.velocity -= (0,100)
+        # GRAVIDADE ZERO
+        if symbol == key.SPACE:
+            if self.space.gravity == (0, -300):
+                self.space.gravity = 0,0
+            else:
+                self.space.gravity = 0,-300
+        # PARA O TEMPO (USO NÃO RECOMENDADO CASO HAJA MUITOS ELEMENTOS NO ESPAÇO)
+        if symbol == key.T:
+            for bodies in self.space.bodies:
+                if bodies.body_type == pymunk.Body.DYNAMIC:
+                    if not bodies.is_sleeping:
+                        bodies.sleep()
+                    else:
+                        bodies.activate()
+        if symbol == key.ESCAPE:
+            game.change_screen(symbol)
+    def update(self,dt): #dt é "data time
+        self.space.step(dt)
+        
+    def on_draw(self):
+        self.window.clear()
+        self.space.debug_draw(self.options)
+
+#-----------------------------------------------------start------------------------------------------------------------
+
 
 
     def on_key_press(self, symbol, modifiers):
