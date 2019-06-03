@@ -120,6 +120,91 @@ class Game:
 
     def run(self):
         pyglet.app.run()
+        
+    
+#-------------------------------------------------- OBJECTS ------------------------------------------------------------
+
+
+collision_types = {
+        "player":1}
+
+class Player():
+    def __init__(self,mass,vertices,position):
+        self.mass = mass
+        self.vertices = vertices
+        self.shape = pymunk.Poly(None,self.vertices)
+        self.moment = pymunk.moment_for_poly(self.mass, self.shape.get_vertices())
+        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
+        self.shape.body = self.body
+        self.body.position = position
+        self.shape.elasticity = 1
+        self.shape.friction = 1
+        
+        self.shape.collision_type = collision_types["player"]
+      #  joint = pymunk.GrooveJoint(AnotherScreen.space.static_body,self,(100,100),(1180,100),(0,0))
+        
+        self.existence = self.body, self.shape
+        self.vida = 1000
+        
+class Ball():
+    def __init__(self,radius,mass,position):
+        self.radius = radius
+        self.mass = mass
+        self.moment = pymunk.moment_for_circle(self.mass,0,self.radius,(0,0))
+        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
+        self.body.position = position
+        self.shape = pymunk.Circle(self.body,self.radius,(0,0))
+        self.shape.elasticity = 1
+        self.body.velocity = 0,0
+        self.shape.friction = 1.0
+        self.combustivel = 3000
+        self.existence = self.body,self.shape
+
+class Segment():
+    def __init__(self,start_point,end_point,thickness): # start e end_point = (x,y)
+        self.start_point = start_point
+        self.end_point = end_point
+        self.thickness = thickness
+        self.space = pymunk.Space()
+        self.shape = pymunk.Segment(self.space.static_body,self.start_point,self.end_point,self.thickness)
+        self.shape.elasticity = 0.0001
+        self.shape.friction = 1
+
+class Dot():
+    def __init__(self, point):
+        self.point = point
+        self.thickness = 3
+        self.space = pymunk.Space()
+        self.shape = pymunk.Segment(self.space.static_body,self.point,self.point,self.thickness)
+        self.shape.elasticity = 1
+        self.shape.friction = 1
+
+class Box():
+    def __init__(self, mass, size, position): # size = (largura, altura); position = (x_centro, y_centro)
+        self.mass = mass
+        self.size = size
+        self.moment = pymunk.moment_for_box(self.mass,self.size)
+        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
+        self.shape = pymunk.Poly.create_box(self.body, size)
+        self.body.position = position
+        self.shape.elasticity = 0.6
+        self.shape.friction = 1
+        self.existence = self.shape,self.body
+
+class Poly():
+    def __init__(self,mass,vertices,position):
+        self.mass = mass
+        self.vertices = vertices
+        self.shape = pymunk.Poly(None,self.vertices)
+        self.moment = pymunk.moment_for_poly(self.mass, self.shape.get_vertices())
+        self.body = pymunk.Body(self.mass,self.moment, pymunk.Body.DYNAMIC)
+        self.shape.body = self.body
+        self.body.position = position
+        self.shape.elasticity = 1
+        self.shape.friction = 1
+        self.existence = self.body, self.shape
+        self.vida = 1000
+
 
 class Screen:
     def __init__(self, game):
@@ -276,6 +361,7 @@ class AnotherScreen(Screen):
                 self.player.combustivel -= 10
             if symbol == key.ESCAPE:
                 game.change_screen(symbol)
+
                
             # GRAVIDADE ZERO
             if symbol == key.SPACE:
@@ -425,8 +511,6 @@ class CarScreen(Screen):
     def on_draw(self):
         self.window.clear()
         self.space.debug_draw(self.options)
-
-
 
 #-----------------------------------------------------start------------------------------------------------------------
 
