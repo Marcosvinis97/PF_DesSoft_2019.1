@@ -49,8 +49,6 @@ class Game:
         
     
 #-------------------------------------------------- OBJETOS ------------------------------------------------------------
-
-
 collision_types = {
         "player":1}
 
@@ -214,22 +212,27 @@ class AnotherScreen(Screen):
         self.space.add(self.player.existence)
      
         # ELEMENTOS ESTÁTICOS: 
+        # Limite da tela inferior
         self.segment1 = Segment((0,4),(game.width,4),10) 
         self.segment1.shape.friction = 1 
         self.segment1.shape.elasticity = 0
 
+        # Limite da tela lateral esquerda
         self.segment2 = Segment((0,0),(0,game.height),10) 
         self.segment2.shape.friction = 0 
-        self.segment2.shape.elasticity = 0      
-         
+        self.segment2.shape.elasticity = 0    
+
+        # Limite da tela superior 
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) 
         self.segment3.shape.friction = 0 
         self.segment3.shape.elasticity = 0 
 
+        # Limite da tela lateral direita
         self.segment4 = Segment((game.width,0),(game.width,game.height),10) 
         self.segment4.shape.friction = 0 
         self.segment4.shape.elasticity = 0 
 
+        # Roxa esquerda
         self.triangulo1_r1 = Poly(1000, ((0,0),(41,0),(41,105)), (52,113)) 
         self.triangulo1_r1.body.body_type = pymunk.Body.STATIC
         self.triangulo1_r1.shape.elasticity = 0
@@ -239,7 +242,6 @@ class AnotherScreen(Screen):
         self.triangulo3_r1 = Poly(1000, ((0,0),(19,0),(9,10)), (98,218)) 
         self.triangulo3_r1.body.body_type = pymunk.Body.STATIC
         self.triangulo3_r1.shape.elasticity = 0
-
         self.retangulo1_r1 = Poly(1000, ((0,0),(96,0),(96,116),(0,116)), (33,0)) 
         self.retangulo1_r1.body.body_type = pymunk.Body.STATIC
         self.retangulo1_r1.shape.elasticity = 0
@@ -250,6 +252,7 @@ class AnotherScreen(Screen):
         self.retangulo3_r1.body.body_type = pymunk.Body.STATIC
         self.retangulo3_r1.shape.elasticity = 0
 
+        # Roxa direita
         self.triangulo1_r2 = Poly(1000, ((0,0),(29,0),(29,205)), (1210,0)) 
         self.triangulo1_r2.body.body_type = pymunk.Body.STATIC
         self.triangulo1_r2.shape.elasticity = 0
@@ -259,7 +262,6 @@ class AnotherScreen(Screen):
         self.triangulo3_r2 = Poly(1000, ((0,0),(39,0),(0,60)), (1277,81)) 
         self.triangulo3_r2.body.body_type = pymunk.Body.STATIC
         self.triangulo3_r2.shape.elasticity = 0
-
         self.retangulo1_r2 = Poly(1000, ((0,0),(26,0),(26,203),(0,203)), (1238,0)) 
         self.retangulo1_r2.body.body_type = pymunk.Body.STATIC
         self.retangulo1_r2.shape.elasticity = 0
@@ -267,6 +269,7 @@ class AnotherScreen(Screen):
         self.retangulo2_r2.body.body_type = pymunk.Body.STATIC
         self.retangulo2_r2.shape.elasticity = 0
 
+        # Adicionando formas geométricas 
         self.space.add( self.segment1.shape,
                         self.segment2.shape,
                         self.segment3.shape, 
@@ -285,13 +288,14 @@ class AnotherScreen(Screen):
         # IMAGENS
         self.background = pyglet.resource.image("Plano_Game1.png")
         self.solo = pyglet.resource.image("Solo.png")
+        self.moldura = pyglet.resource.image("moldura.png")
         
         # TEXTOS
         self.texts = [self.player.body.position[0], 
                       self.player.body.position[1],
                       self.player.body.velocity[0],
                       self.player.body.velocity[1],
-                      self.player.body.angular_velocity]
+                      self.player.combustivel]
 
         self.status = [0]*len(self.texts)
         for i in range(len(self.texts)):
@@ -300,10 +304,11 @@ class AnotherScreen(Screen):
                                     font_size = 10,
                                     color = (100, 255, 0, 255),
                                     x = game.width -200,
-                                    y = game.height -50 - (21*i),
+                                    y = game.height -50 - (15*i),
                                     anchor_x = "left",
                                     anchor_y = "center",
                                     align = "left")
+
         self.handler = self.space.add_default_collision_handler()
         self.handler.begin = self.coll_begin
         self.handler.pre_solve = self.coll_pre
@@ -367,7 +372,7 @@ class AnotherScreen(Screen):
                     "Altitude: {:.2f}".format(self.player.body.position[1]),
                     "Velocidade X: {:.2f}".format(self.player.body.velocity[0]),
                     "Velocidade Y: {:.2f}".format(self.player.body.velocity[1]),
-                    "Velocidade Angular: {:.2f}".format(self.player.body.angular_velocity)] 
+                    "Combustível: {:.2f}".format(self.player.combustivel)] 
 
         for i in range(len(self.status)):
             self.status[i] = pyglet.text.Label("{}".format(self.texts[i]),
@@ -375,7 +380,7 @@ class AnotherScreen(Screen):
                                     font_size = 10,
                                     color = (100, 255, 0, 255),
                                     x = game.width -200,
-                                    y = game.height -100 - (21*i),
+                                    y = game.height -100 - (15*i),
                                     anchor_x = "left",
                                     anchor_y = "center",
                                     align = "center")
@@ -386,6 +391,7 @@ class AnotherScreen(Screen):
         self.background.blit(0,0)
         self.player_sprite.draw()
         self.solo.blit(0,0)
+        self.moldura.blit(1100,221)
 
         for i in range(len(self.texts)):
             self.status[i].draw()
