@@ -90,7 +90,7 @@ class Segment():
         self.thickness = thickness
         self.space = pymunk.Space()
         self.shape = pymunk.Segment(self.space.static_body,self.start_point,self.end_point,self.thickness)
-        self.shape.elasticity = 0
+        self.shape.elasticity = 1
         self.shape.friction = 1
 
 class Dot():
@@ -214,50 +214,79 @@ class AnotherScreen(Screen):
         self.space.add(self.player.existence)
      
         # ELEMENTOS ESTÁTICOS: 
-        self.segment1 = Segment((0,4),(game.width,4),10) # Limite de tela inferior
-        self.segment1.shape.friction = 1 # Elasticidade borda inferior - Solo
-        self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
-        self.segment2.shape.friction = 0 # Elasticidade borda lateral esquerda
-        self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
-        self.segment3.shape.friction = 0 # Elasticidade borda superior
-        self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
-        self.segment4.shape.friction = 0 # Elasticidade borda lateral 
+        self.segment1 = Segment((0,4),(game.width,4),10) 
+        self.segment1.shape.friction = 1 
+        self.segment1.shape.elasticity = 0
 
-        self.retangulo1 = Poly(1000, ((0,0),(96,0),(96,116),(0,116)), (33,0)) 
-        self.retangulo1.body.body_type = pymunk.Body.STATIC
-        self.retangulo1.shape.elasticity = 0
-        self.retangulo2 = Poly(1000, ((0,0),(48,0),(48,73),(0,73)), (81,113))
-        self.retangulo2.body.body_type = pymunk.Body.STATIC
-        self.retangulo2.shape.elasticity = 0
-        self.retangulo3 = Poly(1000, ((0,0),(28,0),(28,32),(0,32)), (93,186))
-        self.retangulo3.body.body_type = pymunk.Body.STATIC
-        self.retangulo3.shape.elasticity = 0
+        self.segment2 = Segment((0,0),(0,game.height),10) 
+        self.segment2.shape.friction = 0 
+        self.segment2.shape.elasticity = 0      
+         
+        self.segment3 = Segment((0,game.height),(game.width,game.height),10) 
+        self.segment3.shape.friction = 0 
+        self.segment3.shape.elasticity = 0 
 
-        self.triangulo1 = Poly(1000, ((0,0),(41,0),(41,105)), (52,113)) 
-        self.triangulo1.body.body_type = pymunk.Body.STATIC
-        self.triangulo1.shape.elasticity = 0
-        self.triangulo2 = Poly(1000, ((0,0),(90,0),(0,55)), (129,0)) 
-        self.triangulo2.body.body_type = pymunk.Body.STATIC
-        self.triangulo2.shape.elasticity = 0
-        self.triangulo3 = Poly(1000, ((0,0),(19,0),(9,10)), (98,218)) 
-        self.triangulo3.body.body_type = pymunk.Body.STATIC
-        self.triangulo3.shape.elasticity = 0
+        self.segment4 = Segment((game.width,0),(game.width,game.height),10) 
+        self.segment4.shape.friction = 0 
+        self.segment4.shape.elasticity = 0 
+
+        self.triangulo1_r1 = Poly(1000, ((0,0),(41,0),(41,105)), (52,113)) 
+        self.triangulo1_r1.body.body_type = pymunk.Body.STATIC
+        self.triangulo1_r1.shape.elasticity = 0
+        self.triangulo2_r1 = Poly(1000, ((0,0),(90,0),(0,55)), (129,0)) 
+        self.triangulo2_r1.body.body_type = pymunk.Body.STATIC
+        self.triangulo2_r1.shape.elasticity = 0
+        self.triangulo3_r1 = Poly(1000, ((0,0),(19,0),(9,10)), (98,218)) 
+        self.triangulo3_r1.body.body_type = pymunk.Body.STATIC
+        self.triangulo3_r1.shape.elasticity = 0
+
+        self.retangulo1_r1 = Poly(1000, ((0,0),(96,0),(96,116),(0,116)), (33,0)) 
+        self.retangulo1_r1.body.body_type = pymunk.Body.STATIC
+        self.retangulo1_r1.shape.elasticity = 0
+        self.retangulo2_r1 = Poly(1000, ((0,0),(48,0),(48,73),(0,73)), (81,113))
+        self.retangulo2_r1.body.body_type = pymunk.Body.STATIC
+        self.retangulo2_r1.shape.elasticity = 0
+        self.retangulo3_r1 = Poly(1000, ((0,0),(28,0),(28,32),(0,32)), (93,186))
+        self.retangulo3_r1.body.body_type = pymunk.Body.STATIC
+        self.retangulo3_r1.shape.elasticity = 0
+
+        self.triangulo1_r2 = Poly(1000, ((0,0),(29,0),(29,205)), (1210,0)) 
+        self.triangulo1_r2.body.body_type = pymunk.Body.STATIC
+        self.triangulo1_r2.shape.elasticity = 0
+        self.triangulo2_r2 = Poly(1000, ((0,0),(58,0),(0,193)), (1263,0)) 
+        self.triangulo2_r2.body.body_type = pymunk.Body.STATIC
+        self.triangulo2_r2.shape.elasticity = 0
+        self.triangulo3_r2 = Poly(1000, ((0,0),(39,0),(0,60)), (1277,81)) 
+        self.triangulo3_r2.body.body_type = pymunk.Body.STATIC
+        self.triangulo3_r2.shape.elasticity = 0
+
+        self.retangulo1_r2 = Poly(1000, ((0,0),(26,0),(26,203),(0,203)), (1238,0)) 
+        self.retangulo1_r2.body.body_type = pymunk.Body.STATIC
+        self.retangulo1_r2.shape.elasticity = 0
+        self.retangulo2_r2 = Poly(1000, ((0,0),(39,0),(39,82),(0,82)), (1277,0)) 
+        self.retangulo2_r2.body.body_type = pymunk.Body.STATIC
+        self.retangulo2_r2.shape.elasticity = 0
 
         self.space.add( self.segment1.shape,
                         self.segment2.shape,
                         self.segment3.shape, 
                         self.segment4.shape, 
-                        self.retangulo1.existence, 
-                        self.retangulo2.existence, 
-                        self.retangulo3.existence,
-                        self.triangulo1.existence, 
-                        self.triangulo2.existence, 
-                        self.triangulo3.existence)
-        
-        
+                        self.triangulo1_r1.existence, 
+                        self.triangulo2_r1.existence, 
+                        self.triangulo3_r1.existence,
+                        self.retangulo1_r1.existence, 
+                        self.retangulo2_r1.existence, 
+                        self.retangulo3_r1.existence,
+                        self.triangulo1_r2.existence,
+                        self.triangulo2_r2.existence,
+                        self.triangulo3_r2.existence,
+                        self.retangulo1_r2.existence,
+                        self.retangulo2_r2.existence)        
+        # IMAGENS
         self.background = pyglet.resource.image("Plano_Game1.png")
         self.solo = pyglet.resource.image("Solo.png")
         
+        # TEXTOS
         self.texts = [self.player.body.position[0], 
                       self.player.body.position[1],
                       self.player.body.velocity[0],
@@ -357,6 +386,7 @@ class AnotherScreen(Screen):
         self.background.blit(0,0)
         self.player_sprite.draw()
         self.solo.blit(0,0)
+
         for i in range(len(self.texts)):
             self.status[i].draw()
 
