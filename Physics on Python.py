@@ -221,8 +221,38 @@ class AnotherScreen(Screen):
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
         self.segment3.shape.friction = 0 # Elasticidade borda superior
         self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
-        self.segment4.shape.friction = 0 # Elasticidade borda lateral direita
-        self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
+        self.segment4.shape.friction = 0 # Elasticidade borda lateral 
+
+        self.retangulo1 = Poly(1000, ((0,0),(96,0),(96,116),(0,116)), (33,0)) 
+        self.retangulo1.body.body_type = pymunk.Body.STATIC
+        self.retangulo1.shape.elasticity = 0
+        self.retangulo2 = Poly(1000, ((0,0),(48,0),(48,73),(0,73)), (81,113))
+        self.retangulo2.body.body_type = pymunk.Body.STATIC
+        self.retangulo2.shape.elasticity = 0
+        self.retangulo3 = Poly(1000, ((0,0),(28,0),(28,32),(0,32)), (93,186))
+        self.retangulo3.body.body_type = pymunk.Body.STATIC
+        self.retangulo3.shape.elasticity = 0
+
+        self.triangulo1 = Poly(1000, ((0,0),(41,0),(41,105)), (52,113)) 
+        self.triangulo1.body.body_type = pymunk.Body.STATIC
+        self.triangulo1.shape.elasticity = 0
+        self.triangulo2 = Poly(1000, ((0,0),(90,0),(0,55)), (129,0)) 
+        self.triangulo2.body.body_type = pymunk.Body.STATIC
+        self.triangulo2.shape.elasticity = 0
+        self.triangulo3 = Poly(1000, ((0,0),(19,0),(9,10)), (98,218)) 
+        self.triangulo3.body.body_type = pymunk.Body.STATIC
+        self.triangulo3.shape.elasticity = 0
+
+        self.space.add( self.segment1.shape,
+                        self.segment2.shape,
+                        self.segment3.shape, 
+                        self.segment4.shape, 
+                        self.retangulo1.existence, 
+                        self.retangulo2.existence, 
+                        self.retangulo3.existence,
+                        self.triangulo1.existence, 
+                        self.triangulo2.existence, 
+                        self.triangulo3.existence)
         
         
         self.background = pyglet.resource.image("Plano_Game1.png")
@@ -322,12 +352,11 @@ class AnotherScreen(Screen):
                                     align = "center")
         
     def on_draw(self):
-        self.space.debug_draw(self.options)
+        self.space.debug_draw(self.options) 
         self.window.clear()
         self.background.blit(0,0)
         self.player_sprite.draw()
         self.solo.blit(0,0)
-        
         for i in range(len(self.texts)):
             self.status[i].draw()
 
