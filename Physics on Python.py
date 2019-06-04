@@ -8,7 +8,7 @@ import pymunk
 from pymunk.pyglet_util import DrawOptions
 from pymunk.vec2d import Vec2d
 # Math
-from math import sqrt, degrees
+from math import sqrt, degrees, pi
 import random
 
 #-------------------------------------------- CLASSE PRINCIPAL ---------------------------------------------------
@@ -199,7 +199,7 @@ class AnotherScreen(Screen):
         self.options = DrawOptions()
         self.options.collision_point_color = (0,0,0,255)
         self.space = pymunk.Space()
-        self.space.gravity = 0, -100
+        self.space.gravity = 0, - 30
         self.space.idle_speed_threshold = 10
         self.space.sleep_time_threshold = 500
         # Pymunk Space
@@ -214,14 +214,14 @@ class AnotherScreen(Screen):
         self.space.add(self.player.existence)
      
         # ELEMENTOS ESTÁTICOS: 
-        self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
-        self.segment1.shape.friction = 1
+        self.segment1 = Segment((0,4),(game.width,4),10) # Limite de tela inferior
+        self.segment1.shape.friction = 1 # Elasticidade borda inferior - Solo
         self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
-        self.segment2.shape.friction = 0
+        self.segment2.shape.friction = 0 # Elasticidade borda lateral esquerda
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
-        self.segment3.shape.friction = 0
+        self.segment3.shape.friction = 0 # Elasticidade borda superior
         self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
-        self.segment4.shape.friction = 0
+        self.segment4.shape.friction = 0 # Elasticidade borda lateral direita
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
         
         
@@ -268,16 +268,13 @@ class AnotherScreen(Screen):
         if self.player.combustivel > 0 :
             # AUMENTA A VELOCIDADE NOS RESPECTIVOS SENTIDOS
             if symbol == key.RIGHT:
-                self.player.body.angular_velocity -= 1
+                self.player.body.angle -= (pi/60) # Rotaciona 3 graus no sentido horário
                 self.player.combustivel -= 10
             if symbol == key.LEFT:
-                self.player.body.angular_velocity += 1
+                self.player.body.angle += (pi/60) # Rotaciona 3 graus no sentido anti-horário
                 self.player.combustivel -= 10
             if symbol == key.UP:
                 self.player.body.apply_impulse_at_local_point((0,1000),self.player.body.center_of_gravity)
-                self.player.combustivel -= 10
-            if symbol == key.DOWN:
-                self.player.body.apply_impulse_at_local_point((0,-1000),self.player.body.center_of_gravity)
                 self.player.combustivel -= 10
             if symbol == key.ESCAPE:
                 game.change_screen(symbol)
@@ -385,14 +382,14 @@ class CarScreen(Screen):
   
         
         # ELEMENTOS ESTÁTICOS: 
-        self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
-        self.segment1.shape.friction = 1
+        self.segment1 = Segment((0,4),(game.width,4),10) # Limite de tela inferior
+        self.segment1.shape.friction = 1 # Elasticidade borda inferior - Solo
         self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
-        self.segment2.shape.friction = 0
+        self.segment2.shape.friction = 0 # Elasticidade borda lateral esquerda
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
-        self.segment3.shape.friction = 0
+        self.segment3.shape.friction = 0 # Elasticidade borda superior
         self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
-        self.segment4.shape.friction = 0
+        self.segment4.shape.friction = 0 # Elasticidade borda lateral direita
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
 
     def on_mouse_press(self, x, y, button, modifier):
@@ -428,14 +425,14 @@ class CarScreen(Screen):
   
         
         # ELEMENTOS ESTÁTICOS: 
-        self.segment1 = Segment((0,13),(game.width,13),2) # Limite de tela inferior
-        self.segment1.shape.friction = 1
+        self.segment1 = Segment((0,4),(game.width,4),10) # Limite de tela inferior
+        self.segment1.shape.friction = 1 # Elasticidade borda inferior - Solo
         self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
-        self.segment2.shape.friction = 0
+        self.segment2.shape.friction = 0 # Elasticidade borda lateral esquerda
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
-        self.segment3.shape.friction = 0
+        self.segment3.shape.friction = 0 # Elasticidade borda superior
         self.segment4 = Segment((game.width,0),(game.width,game.height),10) # Limite de tela lateral direito
-        self.segment4.shape.friction = 0
+        self.segment4.shape.friction = 0 # Elasticidade borda lateral direita
         self.space.add(self.segment1.shape, self.segment2.shape, self.segment3.shape, self.segment4.shape)
 
 
