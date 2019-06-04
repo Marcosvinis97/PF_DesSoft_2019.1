@@ -199,12 +199,12 @@ class AnotherScreen(Screen):
         self.options = DrawOptions()
         self.options.collision_point_color = (0,0,0,255)
         self.space = pymunk.Space()
-        self.space.gravity = 0, - 30
+        self.space.gravity = 0, - 100
         self.space.idle_speed_threshold = 10
         self.space.sleep_time_threshold = 500
         # Pymunk Space
 
-        self.player = Player(10,( (0,0),(171/5, 0),(171/10,300/5) ),(game.width/2,game.height/2))
+        self.player = Player(1350,( (0,0),(171/5, 0),(171/10,300/5) ),(game.width/2,game.height/2))
         self.player.body.center_of_gravity = ( (0 + 171/5 + 171/10)/3, 300/15)
         self.player.body.elasticity = 0
         self.player.body.friction = 1
@@ -274,7 +274,7 @@ class AnotherScreen(Screen):
                 self.player.body.angle += (pi/60) # Rotaciona 3 graus no sentido anti-horário
                 self.player.combustivel -= 10
             if symbol == key.UP:
-                self.player.body.apply_impulse_at_local_point((0,1000),self.player.body.center_of_gravity)
+                self.player.body.apply_impulse_at_local_point((0,45000),self.player.body.center_of_gravity)
                 self.player.combustivel -= 10
             if symbol == key.ESCAPE:
                 game.change_screen(symbol)
