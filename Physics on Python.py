@@ -317,15 +317,7 @@ class AnotherScreen(Screen):
         self.player.vida = 1000
 
     def on_mouse_press(self, x, y, button, modifier):
-        # LADO DIREITO ADICIONA 1 QUADRADO CINÉTICOS NA POSIÇÃO DO MOUSE
-        if button & mouse.RIGHT:
-            box = Box(50,(25,25),(x,y))
-            box.body.body_type = pymunk.Body.KINEMATIC
-            self.space.add(box.existence)
-        # LADO ESQUERDO ADICIONA 1 QUADRADO DINÂMICO NA POSIÇÃO DO MOUSE
-        if button & mouse.LEFT:
-            box = Box(50,(25,25),(x,y))
-            self.space.add(box.existence)
+        pass
 
     def on_key_press(self, symbol, modifiers):
         
@@ -340,23 +332,23 @@ class AnotherScreen(Screen):
             if symbol == key.UP:
                 self.player.body.apply_impulse_at_local_point((0,45000),self.player.body.center_of_gravity)
                 self.player.combustivel -= 10
-            if symbol == key.ESCAPE:
-                game.change_screen(symbol)
-              
-            # GRAVIDADE ZERO
-            if symbol == key.SPACE:
-                if self.space.gravity == (0, -300):
-                    self.space.gravity = 0,0
-                else:
-                    self.space.gravity = 0,-300
-                    # PARA O TEMPO (USO NÃO RECOMENDADO CASO HAJA MUITOS ELEMENTOS NO ESPAÇO)
-            if symbol == key.T:
-                for bodies in self.space.bodies:
-                    if bodies.body_type == pymunk.Body.DYNAMIC:
-                        if not bodies.is_sleeping:
-                            bodies.sleep()
-                        else:
-                            bodies.activate()
+        if symbol == key.ESCAPE:
+            game.change_screen(symbol)
+          
+        # GRAVIDADE ZERO
+        if symbol == key.SPACE:
+            if self.space.gravity == (0, -300):
+                self.space.gravity = 0,0
+            else:
+                self.space.gravity = 0,-300
+                # PARA O TEMPO (USO NÃO RECOMENDADO CASO HAJA MUITOS ELEMENTOS NO ESPAÇO)
+        if symbol == key.T:
+            for bodies in self.space.bodies:
+                if bodies.body_type == pymunk.Body.DYNAMIC:
+                    if not bodies.is_sleeping:
+                        bodies.sleep()
+                    else:
+                        bodies.activate()
 
     def on_key_release(self,symbol,modifiers):
        if symbol in (key.RIGHT,key.LEFT):
@@ -398,18 +390,15 @@ class AnotherScreen(Screen):
 
     def coll_begin(self,arbiter,space,data):
         self.player.vida -= 10
-        return True
 
     def coll_pre(self,arbiter,space,data):
-        return True
+        pass
 
     def coll_post(self,arbiter,space,data):
-        print("post solve")
-        return True
+        pass
  
     def coll_separate(self,arbiter,space,data):
-        print("separate")
-        return True
+        pass
 
 class CarScreen(Screen):
     def __init__(self, game):
@@ -425,16 +414,14 @@ class CarScreen(Screen):
         self.space.idle_speed_threshold = 10
         self.space.sleep_time_threshold = 50
         # Pymunk Space
-        self.distance_car_x = 300
-        self.distance_car_y = 300
         self.car = Poly(100,( (0,0),(80,0), (80,35), (65,60), (15,60), (0,35) ),(game.width/4, game.height/2))   
         self.car.body.elasticity = 0.1
         self.car.body.friction = 1
         self.space.add(self.car.existence)
         
-        self.roda_traseira = Ball(30,40,(game.width/4 -30, game.height/2 - 30))
+        self.roda_traseira = Ball(30,50,(game.width/4 -30, game.height/2 - 30))
         self.roda_traseira.shape.elasticity = 0.1
-        self.roda_dianteira = Ball(30,40,(game.width/4 + 110, game.height/2 - 30))
+        self.roda_dianteira = Ball(30,50,(game.width/4 + 110, game.height/2 - 30))
         self.roda_dianteira.shape.elasticity = 0.1
         
         self.pino1 = pymunk.PinJoint(self.car.body, self.roda_traseira.body, (0, 0), (0, 0))
@@ -453,11 +440,10 @@ class CarScreen(Screen):
                        self.pino2,
                        self.guia2,
                        self.mola2)
-        self.space.reindex_static
         
         # ELEMENTOS ESTÁTICOS: 
         self.segment1 = Segment((0,4),(game.width,4),10) # Limite de tela inferior
-        self.segment1.shape.friction = 100 # Elasticidade borda inferior - Solo
+        self.segment1.shape.friction = 1 # Elasticidade borda inferior - Solo
         self.segment2 = Segment((0,0),(0,game.height),10) # Limite de tela lateral esquerdo
         self.segment2.shape.friction = 0 # Elasticidade borda lateral esquerda
         self.segment3 = Segment((0,game.height),(game.width,game.height),10) # Limite de tela superior
@@ -470,13 +456,11 @@ class CarScreen(Screen):
         if button == mouse.LEFT:
             for i in range(10):
                 box = Box(3, (15,15) ,(x,y))
+                box.shape.elasticity = 0.5
+                box.shape.friction = 1
                 self.space.add(box.existence)
         if button == mouse.RIGHT:
-            box = Box(15,(4,4), self.car.body.local_to_world(self.car.body.center_of_gravity + (0,70)))
-            self.space.add(box.existence)
-            box.body.velocity = self.car.body.world_to_local((1500,0))
-            print(box.body.velocity)
-            self.car.body.local_to_world
+            pass
 
 
     def on_key_press(self, symbol, modifiers):
