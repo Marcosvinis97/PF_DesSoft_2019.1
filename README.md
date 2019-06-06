@@ -28,11 +28,8 @@ Pré-Projeto:
 ![imagem da primeira tela de inicio](Imagens/inicio.png)
 
 #menu de fases
-![imagem do menu de fases](imagens/fases.jpeg)
-
-#menu de fases#
-![imagem do menu de fases](Imagens/fases.png)
+![imagem do menu de simulações](imagens/fases.jpeg)
 
 #fase 0#
-![imagem da primeira tela de jogo](Imagens/1.png)
+![imagem da primeira tela de simulador](Imagens/1.png)
 
