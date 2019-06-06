@@ -5,7 +5,7 @@ Alunos:
 	Luiz Felipe Lazzaron; 
 	Marcos Vinicius da Silva; 
 
-O projeto final de Design de Software se constitui na formação simulador físico, intitulado por “Phisics On Python”. No simulador, o usuário pode escolher o assunto que deseja estudar e observar.
+O projeto final de Design de Software se constitui na formação de um simulador físico, intitulado por “Phisics On Python”. No simulador, o usuário pode escolher o assunto que deseja estudar e observar.
 
 ETAPAS DO PROJETO:
 1. Pré-Projeto;
